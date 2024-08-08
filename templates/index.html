@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Stats</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { max-width: 800px; margin: auto; }
+        h1 { text-align: center; }
+        .stats { margin-top: 20px; }
+        .stat-item { margin-bottom: 15px; }
+        .label { font-weight: bold; }
+    </style>
+    <script>
+        function fetchStats() {
+            fetch('/stats')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('cpu_usage').innerText = `${data.cpu.cpu_usage}%`;
+                    document.getElementById('cpu_temp').innerText = data.cpu.cpu_temp !== 'N/A' ? `${data.cpu.cpu_temp}°C` : 'N/A';
+                    document.getElementById('cpu_wattage').innerText = data.cpu.cpu_wattage !== 'N/A' ? `${data.cpu.cpu_wattage} W` : 'N/A';
+                    
+                    document.getElementById('gpu_usage').innerText = `${data.gpu.gpu_utilization}%`;
+                    document.getElementById('gpu_temp').innerText = `${data.gpu.gpu_temp}°C`;
+                    document.getElementById('gpu_wattage').innerText = `${data.gpu.gpu_power_usage} W`;
+                    document.getElementById('gpu_vram_usage').innerText = `${data.gpu.gpu_vram_usage} MB`;
+
+                    document.getElementById('memory_usage').innerText = `${data.memory.memory_usage}%`;
+                })
+                .catch(error => console.error('Error fetching stats:', error));
+        }
+
+        setInterval(fetchStats, 5000);  // Fetch stats every 5 seconds
+        window.onload = fetchStats;  // Fetch stats on page load
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>PC Stats</h1>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="label">CPU Usage:</div>
+                <div id="cpu_usage">Loading...</div>
+            </div>
+            <div class="stat-item">
+                <div class="label">CPU Temperature:</div>
+                <div id="cpu_temp">Loading...</div>
+            </div>
+            <div class="stat-item">
+                <div class="label">CPU Wattage:</div>
+                <div id="cpu_wattage">Loading...</div>
+            </div>
+            <div class="stat-item">
+                <div class="label">GPU Usage:</div>
+                <div id="gpu_usage">Loading...</div>
+            </div>
+            <div class="stat-item">
+                <div class="label">GPU Temperature:</div>
+                <div id="gpu_temp">Loading...</div>
+            </div>
+            <div class="stat-item">
+                <div class="label">GPU Wattage:</div>
+                <div id="gpu_wattage">Loading...</div>
+            </div>
+            <div class="stat-item">
+                <div class="label">GPU VRAM Usage:</div>
+                <div id="gpu_vram_usage">Loading...</div>
+            </div>
+            <div class="stat-item">
+                <div class="label">Memory Usage:</div>
+                <div id="memory_usage">Loading...</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
